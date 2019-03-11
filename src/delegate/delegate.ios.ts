@@ -264,15 +264,22 @@ export class TwilioAppDelegate extends UIResponder
     // if(customParameters) {
     //   console.debug("Custom Parameters Detected:",customParameters);
     // }
-    let customParameters : any= common.readIt(common.pushListener, 'onIncomingCall', callInvite);
+
+    console.log('richard:',callInvite.customParameters);
+    let customParameters : any = common.readIt(common.pushListener, 'onIncomingCall', callInvite);
+
+    let cxParams = {
+      from: from.toString()
+    };
 
     if(customParameters !== undefined) {
-
+      console.log("Custom parmeters are not undefined",customParameters);
+      cxParams = Object.assign({}, cxParams, customParameters);
     }
 
     let callHandle = new CXHandle({
       type: CXHandleType.Generic,
-      value: from.toString(),
+      value: cxParams.from,
     });
 
     let callUpdate = new CXCallUpdate();
