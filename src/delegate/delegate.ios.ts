@@ -268,10 +268,10 @@ export class TwilioAppDelegate extends UIResponder
     console.log('richard:',callInvite.customParameters);
 
     // Parse NSDictionary into JSON Object
-    var jsonData = NSJSONSerialization.dataWithJSONObjectOptionsError(callInvite.customParameters, 0, null); 
-    
+    var jsonData : any = NSJSONSerialization.dataWithJSONObjectOptionsError(callInvite.customParameters, 0, null); 
+
     // Parse the JSON Data into a JSONObject
-    var JSONObject = JSON.parse(NSString.alloc().initWithDataEncoding(jsonData, 4).toString());
+    var JSONObject : Object = JSON.parse(NSString.alloc().initWithDataEncoding(jsonData, 4).toString());
 
     let customParameters : any = common.readIt(common.pushListener, 'onIncomingCall', JSONObject);
 
