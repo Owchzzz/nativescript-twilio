@@ -1,8 +1,8 @@
 import * as common from "./twilio.common";
 import { CallDelegate } from "./delegate";
 
-declare var NSDictionary: any;
 declare var NSError: any;
+declare var NSJSONSerialization: any;
 
 export const getAccessToken = common.getAccessToken;
 export const initTwilio = common.initTwilio;

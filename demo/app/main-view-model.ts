@@ -1,9 +1,9 @@
 import { Observable } from 'tns-core-modules/data/observable';
 import * as dialogs from 'tns-core-modules/ui/dialogs';
 import { isAndroid } from 'tns-core-modules/platform';
-
+import { device } from "tns-core-modules/platform";
 import * as Permissions from 'nativescript-permissions';
-import { getAccessToken, setupCallListener, setupPushListener, Twilio } from 'nativescript-twilio';
+import { getAccessToken, setupCallListener, setupPushListener, Twilio , unregisterPushNotifications} from 'nativescript-twilio';
 
 declare var android: any;
 
@@ -11,7 +11,7 @@ export class HelloWorldModel extends Observable {
   public message: string;
   public senderPhoneNumber: string = '+34606039750';
   // public phoneNumber: string = '+639171137700';
-  public phoneNumber: string = '+34605264081';
+  public phoneNumber: string = '+14692900583';
   public option1: any = {
     key: '',
     value: '',
@@ -48,27 +48,38 @@ export class HelloWorldModel extends Observable {
     };
 
     setTimeout(() => {
-      console.log('setupCallListener!');
+      console.log('Registering call listeners');
       setupCallListener(callListener);
-    }, 10000)
+    }, 15000)
 
-    // listener for push notifications (incoming calls)
-    const pushListener = {
-      onPushRegistered(accessToken, deviceToken) {
-        dialogs.alert('push registration succeded');
-      },
-      onPushRegisterFailure (error) {
-        dialogs.alert(`push registration failed: ${error}`);
-      }
-    };
+  
 
-    setupPushListener(pushListener);
+    setTimeout(() => {
+        // listener for push notifications (incoming calls)
+      const pushListener = {
+        onPushRegistered(accessToken, deviceToken) {
+          dialogs.alert('push registration succeded');
+        },
+        onPushRegisterFailure (error) {
+          dialogs.alert(`push registration failed: ${error}`);
+        },
+
+        onIncomingCall(customParameters) {
+          return {
+            from: customParameters.from_name
+          }
+        }
+      };
+      console.log('Registering push listeners');
+      setupPushListener(pushListener);
+    },20000);
   }
 
   public onCall(): void {
+    console.log('Updating access token:');
     getAccessToken()
       .then((token) => {
-        console.log(`Twilio access token: ${token}`);
+        // console.log(`Twilio access token: ${token}`);
 
         this.twilio = new Twilio(token);
 
@@ -80,7 +91,6 @@ export class HelloWorldModel extends Observable {
           options[this.option2.key] = this.option2.value
         }
 
-        console.log('Calling to ', this.phoneNumber);
         let call = this.twilio.makeCall(this.senderPhoneNumber, this.phoneNumber, options);
       })
     .catch((error) => {
