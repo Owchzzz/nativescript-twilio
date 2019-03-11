@@ -231,7 +231,6 @@ export class TwilioAppDelegate extends UIResponder
   // End of TVONotificationDelegate interface implementation
 
   handleCallInviteReceived(callInvite: TVOCallInvite) {
-    console.debug("handleCallInviteReceived");
 
     if (this.call) {
         console.debug("Already an active call.");
@@ -242,7 +241,7 @@ export class TwilioAppDelegate extends UIResponder
 
     this.callInvite = callInvite;
 
-    this.reportIncomingCall(callInvite.from, callInvite.uuid);
+    this.reportIncomingCall(callInvite.from, callInvite.uuid, callInvite);
   }
 
   handleCallInviteCanceled(callInviteCanceled: TVOCancelledCallInvite) {
@@ -259,7 +258,18 @@ export class TwilioAppDelegate extends UIResponder
       }
   }
 
-  reportIncomingCall(from: String, uuid: any) {
+  reportIncomingCall(from: String, uuid: any, callInvite : TVOCallInvite) {
+    // let customParameters: NSDictionary <string,string> = callInvite.customParameters;
+    
+    // if(customParameters) {
+    //   console.debug("Custom Parameters Detected:",customParameters);
+    // }
+    let customParameters : any= common.readIt(common.pushListener, 'onIncomingCall', callInvite);
+
+    if(customParameters !== undefined) {
+
+    }
+
     let callHandle = new CXHandle({
       type: CXHandleType.Generic,
       value: from.toString(),
@@ -279,7 +289,7 @@ export class TwilioAppDelegate extends UIResponder
           console.error(`Failed to report incoming call successfully: ${error.localizedDescription}`);
           return
       }
-      TwilioVoice.logLevel = TVOLogLevel.All;
+      // TwilioVoice.logLevel = TVOLogLevel.All;
       console.debug("Incoming call successfully reported.");
     }
 
