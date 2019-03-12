@@ -69,7 +69,7 @@ export class HelloWorldModel extends Observable {
   }
 
   public onCall(): void {
-    console.log('Updating access token:');
+
     getAccessToken()
       .then((token) => {
         console.log(`Twilio access token: ${token}`);
