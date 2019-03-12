@@ -74,8 +74,8 @@ export class TwilioAppDelegate extends UIResponder
     let appName = mainBundle.infoDictionary.objectForKey('CFBundleDisplayName');
 
     let configuration = CXProviderConfiguration.alloc().initWithLocalizedName(appName);
-    configuration.maximumCallGroups = 1
-    configuration.maximumCallsPerCallGroup = 1
+    configuration.maximumCallGroups = 1;
+    configuration.maximumCallsPerCallGroup = 1;
 
     this.callKitProvider = CXProvider.alloc().initWithConfiguration(configuration);
     this.callKitCallController = CXCallController.alloc().init();
@@ -173,7 +173,7 @@ export class TwilioAppDelegate extends UIResponder
     // Save for later when the notification is properly handled.
     this.incomingPushCompletionCallback = completion;
 
-    if (type == PKPushTypeVoIP) {
+    if (type === PKPushTypeVoIP) {
       TwilioVoice.handleNotificationDelegate(payload.dictionaryPayload, this);
     }
   }
@@ -185,13 +185,13 @@ export class TwilioAppDelegate extends UIResponder
   ) {
     console.debug(`PUSHKIT : VOIP_TOKEN : ${type}`);
 
-    if (type != PKPushTypeVoIP) {
+    if (type !== PKPushTypeVoIP) {
         return;
     }
 
     common.getAccessToken()
       .then((accessToken) => {
-        let deviceToken = (pushCredentials.token as NSData).description
+        let deviceToken = (pushCredentials.token as NSData).description;
 
         const callback = (error) => {
           if (error) {
@@ -211,13 +211,13 @@ export class TwilioAppDelegate extends UIResponder
       .catch((error) => {
         console.error('Error getting access token:', error);
         return;
-      })
+      });
   }
 
   // TVONotificationDelegate interface implementation
   callInviteReceived(callInvite: TVOCallInvite) {
     console.debug("callInviteReceived");
-    this.handleCallInviteReceived(callInvite)
+    this.handleCallInviteReceived(callInvite);
   }
 
   cancelledCallInviteReceived(cancelledCallInvite: TVOCancelledCallInvite) {
@@ -235,7 +235,7 @@ export class TwilioAppDelegate extends UIResponder
     if (this.call) {
         console.debug("Already an active call.");
         console.debug("  >> Ignoring call from %@", callInvite.from);
-        this.incomingPushHandled()
+        this.incomingPushHandled();
         return;
     }
 
@@ -248,7 +248,7 @@ export class TwilioAppDelegate extends UIResponder
     console.debug("handleCallInviteCanceled");
     // performEndCallAction(callInvite.uuid);
     this.callInvite = null;
-    this.incomingPushHandled()
+    this.incomingPushHandled();
   }
 
   incomingPushHandled() {
@@ -258,29 +258,23 @@ export class TwilioAppDelegate extends UIResponder
       }
   }
 
-  reportIncomingCall(from: String, uuid: any, callInvite : TVOCallInvite) {
-    // let customParameters: NSDictionary <string,string> = callInvite.customParameters;
-    
-    // if(customParameters) {
-    //   console.debug("Custom Parameters Detected:",customParameters);
-    // }
+  reportIncomingCall(from: String, uuid: any, callInvite: TVOCallInvite) {
 
-    console.log('richard:',callInvite.customParameters);
+    // Parse NSDictionary into JSON Object so that we can support multiple formats for custom Parameters
+    let jsonData: any = NSJSONSerialization.dataWithJSONObjectOptionsError(callInvite.customParameters, 0, null);
 
-    // Parse NSDictionary into JSON Object
-    var jsonData : any = NSJSONSerialization.dataWithJSONObjectOptionsError(callInvite.customParameters, 0, null); 
+    // Parse the JSON Data into an Object
+    let JSONObject: Object = JSON.parse(NSString.alloc().initWithDataEncoding(jsonData, 4).toString());
 
-    // Parse the JSON Data into a JSONObject
-    var JSONObject : Object = JSON.parse(NSString.alloc().initWithDataEncoding(jsonData, 4).toString());
-
-    let customParameters : any = common.readIt(common.pushListener, 'onIncomingCall', JSONObject);
+    // Read the Custom Parameters and assign it to this variable
+    let customParameters: any = common.readIt(common.pushListener, 'onIncomingCall', JSONObject);
 
     let cxParams = {
       from: from.toString()
     };
 
-    if(customParameters !== undefined) {
-      console.log("Custom parmeters are not undefined",customParameters);
+    if (customParameters !== undefined) {
+      // Merge the custom parameters into the default parameters
       cxParams = Object.assign({}, cxParams, customParameters);
     }
 
@@ -301,11 +295,11 @@ export class TwilioAppDelegate extends UIResponder
     let callback = (error: NSError) => {
       if (error) {
           console.error(`Failed to report incoming call successfully: ${error.localizedDescription}`);
-          return
+          return;
       }
       // TwilioVoice.logLevel = TVOLogLevel.All;
       console.debug("Incoming call successfully reported.");
-    }
+    };
 
     this.callKitProvider.reportNewIncomingCallWithUUIDUpdateCompletion(uuid, callUpdate, callback);
   }
@@ -316,25 +310,25 @@ export class TwilioAppDelegate extends UIResponder
     this.audioDevice.enabled = true;
   }
 
-	providerDidActivateAudioSession(provider: CXProvider, audioSession: AVAudioSession) {
+  providerDidActivateAudioSession(provider: CXProvider, audioSession: AVAudioSession) {
     console.debug('providerDidActivateAudioSession');
     this.audioDevice.enabled = true;
   }
 
-	providerDidBegin(provider: CXProvider) {
+  providerDidBegin(provider: CXProvider) {
     console.debug('providerDidBegin');
   }
 
-	providerDidDeactivateAudioSession(provider: CXProvider, audioSession: AVAudioSession) {
+  providerDidDeactivateAudioSession(provider: CXProvider, audioSession: AVAudioSession) {
     console.debug('providerDidDeactivateAudioSession');
   }
 
-	providerExecuteTransaction(provider: CXProvider, transaction: CXTransaction) {
+  providerExecuteTransaction(provider: CXProvider, transaction: CXTransaction) {
     console.debug('providerExecuteTransaction');
     return false;
   }
 
-	providerPerformAnswerCallAction(provider: CXProvider, action: CXAnswerCallAction) {
+  providerPerformAnswerCallAction(provider: CXProvider, action: CXAnswerCallAction) {
     console.debug('providerPerformAnswerCallAction');
 
     this.audioDevice.enabled = false;
@@ -342,9 +336,9 @@ export class TwilioAppDelegate extends UIResponder
 
     const callback = (success) => {
         if (success) {
-            action.fulfill()
+            action.fulfill();
         } else {
-            action.fail()
+            action.fail();
         }
     };
 

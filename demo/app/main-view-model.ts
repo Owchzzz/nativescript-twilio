@@ -32,7 +32,6 @@ export class HelloWorldModel extends Observable {
         console.log('Permission is not granted :(');
       });
     }
-    
     // Assign Call Listeners
     const callListener = {
       onConnectFailure(call, error) {
@@ -49,7 +48,6 @@ export class HelloWorldModel extends Observable {
     // Setup Listener for call events
     console.log('Registering call listeners');
     setupCallListener(callListener);
-    
     // Assign listener for push notifications (incoming calls)
     const pushListener = {
       onPushRegistered(accessToken, deviceToken) {
@@ -61,14 +59,13 @@ export class HelloWorldModel extends Observable {
       onIncomingCall(customParameters) {
         return {
           from: customParameters.custom_parameter_name
-        }
+        };
       }
     };
 
     // Setup Push Listener
     console.log('Registering push listeners');
     setupPushListener(pushListener);
-    
   }
 
   public onCall(): void {
@@ -82,10 +79,10 @@ export class HelloWorldModel extends Observable {
 
         let options = {};
         if (this.option1.key) {
-          options[this.option1.key] = this.option1.value
+          options[this.option1.key] = this.option1.value;
         }
         if (this.option2.key) {
-          options[this.option2.key] = this.option2.value
+          options[this.option2.key] = this.option2.value;
         }
 
         let call = this.twilio.makeCall(this.senderPhoneNumber, this.phoneNumber, options);
@@ -93,6 +90,6 @@ export class HelloWorldModel extends Observable {
     .catch((error) => {
       console.error(error);
       dialogs.alert(error);
-    })
+    });
   }
 }
