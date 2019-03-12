@@ -9,9 +9,9 @@ declare var android: any;
 
 export class HelloWorldModel extends Observable {
   public message: string;
-  public senderPhoneNumber: string = '+34606039750';
-  // public phoneNumber: string = '+639171137700';
-  public phoneNumber: string = '+14692900583';
+  public senderPhoneNumber: string = ''; // Place the phone number from where the call will originate, or the client that it originates from i.e. client:alice
+  public phoneNumber: string = ''; // Place the receiving phone number or client i.e. +12345678
+
   public option1: any = {
     key: '',
     value: '',
@@ -55,7 +55,7 @@ export class HelloWorldModel extends Observable {
   
 
     setTimeout(() => {
-        // listener for push notifications (incoming calls)
+      // listener for push notifications (incoming calls)
       const pushListener = {
         onPushRegistered(accessToken, deviceToken) {
           dialogs.alert('push registration succeded');
