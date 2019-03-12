@@ -241,7 +241,7 @@ export class TwilioAppDelegate extends UIResponder
 
     this.callInvite = callInvite;
 
-    this.reportIncomingCall(callInvite.from, callInvite.uuid, callInvite);
+    this.reportIncomingCall(callInvite);
   }
 
   handleCallInviteCanceled(callInviteCanceled: TVOCancelledCallInvite) {
@@ -258,19 +258,19 @@ export class TwilioAppDelegate extends UIResponder
       }
   }
 
-  reportIncomingCall(from: String, uuid: any, callInvite: TVOCallInvite) {
+  reportIncomingCall(callInvite: TVOCallInvite) {
 
     // Parse NSDictionary into JSON Object so that we can support multiple formats for custom Parameters
-    let jsonData: any = NSJSONSerialization.dataWithJSONObjectOptionsError(callInvite.customParameters, 0, null);
+    const jsonData: any = NSJSONSerialization.dataWithJSONObjectOptionsError(callInvite.customParameters, 0, null);
 
     // Parse the JSON Data into an Object
-    let JSONObject: Object = JSON.parse(NSString.alloc().initWithDataEncoding(jsonData, 4).toString());
+    const JSONObject: Object = JSON.parse(NSString.alloc().initWithDataEncoding(jsonData, 4).toString());
 
     // Read the Custom Parameters and assign it to this variable
     let customParameters: any = common.readIt(common.pushListener, 'onIncomingCall', JSONObject);
 
     let cxParams = {
-      from: from.toString()
+      from: callInvite.from.toString()
     };
 
     if (customParameters !== undefined) {
@@ -301,7 +301,7 @@ export class TwilioAppDelegate extends UIResponder
       console.debug("Incoming call successfully reported.");
     };
 
-    this.callKitProvider.reportNewIncomingCallWithUUIDUpdateCompletion(uuid, callUpdate, callback);
+    this.callKitProvider.reportNewIncomingCallWithUUIDUpdateCompletion(callInvite.uuid, callUpdate, callback);
   }
 
   // CXProviderDelegate interface implementation
