@@ -9,8 +9,8 @@ declare var android: any;
 
 export class HelloWorldModel extends Observable {
   public message: string;
-  public senderPhoneNumber: string = ''; // Place the phone number from where the call will originate, or the client that it originates from i.e. client:alice
-  public phoneNumber: string = ''; // Place the receiving phone number or client i.e. +12345678
+  public senderPhoneNumber: string = ''; // Assign the default phone number from where the call will originate, or the client that it originates from i.e. client:alice
+  public phoneNumber: string = ''; // Assign the default receiving phone number or client i.e. +12345678
 
   public option1: any = {
     key: '',
@@ -32,9 +32,8 @@ export class HelloWorldModel extends Observable {
         console.log('Permission is not granted :(');
       });
     }
-
-    let self = this;
-
+    
+    // Assign Call Listeners
     const callListener = {
       onConnectFailure(call, error) {
         dialogs.alert(`connection failure: ${error}`);
@@ -47,40 +46,38 @@ export class HelloWorldModel extends Observable {
       }
     };
 
-    setTimeout(() => {
-      console.log('Registering call listeners');
-      setupCallListener(callListener);
-    }, 15000)
-
-  
-
-    setTimeout(() => {
-      // listener for push notifications (incoming calls)
-      const pushListener = {
-        onPushRegistered(accessToken, deviceToken) {
-          dialogs.alert('push registration succeded');
-        },
-        onPushRegisterFailure (error) {
-          dialogs.alert(`push registration failed: ${error}`);
-        },
-
-        onIncomingCall(customParameters) {
-          return {
-            from: customParameters.from_name
-          }
+    // Setup Listener for call events
+    console.log('Registering call listeners');
+    setupCallListener(callListener);
+    
+    // Assign listener for push notifications (incoming calls)
+    const pushListener = {
+      onPushRegistered(accessToken, deviceToken) {
+        dialogs.alert('push registration succeded');
+      },
+      onPushRegisterFailure (error) {
+        dialogs.alert(`push registration failed: ${error}`);
+      },
+      onIncomingCall(customParameters) {
+        return {
+          from: customParameters.from_name
         }
-      };
-      console.log('Registering push listeners');
-      setupPushListener(pushListener);
-    },20000);
+      }
+    };
+
+    // Setup Push Listener
+    console.log('Registering push listeners');
+    setupPushListener(pushListener);
+    
   }
 
   public onCall(): void {
     console.log('Updating access token:');
     getAccessToken()
       .then((token) => {
-        // console.log(`Twilio access token: ${token}`);
+        console.log(`Twilio access token: ${token}`);
 
+        // Instantiate Twilio with token provided from server
         this.twilio = new Twilio(token);
 
         let options = {};
