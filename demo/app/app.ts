@@ -7,7 +7,7 @@ import { TwilioAppDelegate } from 'nativescript-twilio/delegate';
 const accessTokenUrl = '';
 
 const accessTokenHeaders = {
-  // 'Authorization': 'Token '
+  // 'Authorization': 'Token sometoken'
 };
 
 initTwilio(accessTokenUrl, accessTokenHeaders);
