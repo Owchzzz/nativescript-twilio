@@ -38,41 +38,45 @@ export class HelloWorldModel extends Observable {
     const callListener = {
       onConnectFailure(call, error) {
         dialogs.alert(`connection failure: ${error}`);
+        console.log(call);
       },
       onConnected (call) {
         dialogs.alert('call connected');
+        console.log(call)
       },
       onDisconnected (call) {
         dialogs.alert('disconnected');
+        console.log(call);
       }
     };
 
     setTimeout(() => {
       console.log('Registering call listeners');
       setupCallListener(callListener);
-    }, 15000)
-
-  
-
+    }, 100);
     setTimeout(() => {
         // listener for push notifications (incoming calls)
       const pushListener = {
         onPushRegistered(accessToken, deviceToken) {
-          dialogs.alert('push registration succeded');
+          console.log('push registration succeded');
         },
         onPushRegisterFailure (error) {
-          dialogs.alert(`push registration failed: ${error}`);
+          console.log(`push registration failed: ${error}`);
         },
 
         onIncomingCall(customParameters) {
           return {
             from: customParameters.from_name
           }
+        },
+
+        onAcceptCall(customParameters) {
+          console.log('OnAcceptCall fired!', customParameters);
         }
       };
       console.log('Registering push listeners');
       setupPushListener(pushListener);
-    },20000);
+    },100);
   }
 
   public onCall(): void {
@@ -95,7 +99,6 @@ export class HelloWorldModel extends Observable {
       })
     .catch((error) => {
       console.error(error);
-      dialogs.alert(error);
     })
   }
 }
