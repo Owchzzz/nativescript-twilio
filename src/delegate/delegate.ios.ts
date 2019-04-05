@@ -212,7 +212,7 @@ export class TwilioAppDelegate extends UIResponder
     // Save for later when the notification is properly handled.
     this.incomingPushCompletionCallback = completion;
 
-    if (type == PKPushTypeVoIP) {
+    if (type === PKPushTypeVoIP) {
       TwilioVoice.handleNotificationDelegate(payload.dictionaryPayload, this);
     } else {
         console.log('Recvieved push notification with type:',type);
@@ -317,7 +317,6 @@ export class TwilioAppDelegate extends UIResponder
 
     this.callInvite = null;
     this.incomingPushHandled();
-
   }
 
   incomingPushHandled() {
@@ -350,7 +349,7 @@ export class TwilioAppDelegate extends UIResponder
     );
 
     let cxParams = {
-      from: from.toString()
+      from: callInvite.from.toString()
     };
 
     if (customParameters !== undefined) {

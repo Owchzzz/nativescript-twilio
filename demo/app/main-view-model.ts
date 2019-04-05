@@ -9,9 +9,9 @@ declare var android: any;
 
 export class HelloWorldModel extends Observable {
   public message: string;
-  public senderPhoneNumber: string = '+34606039750';
-  // public phoneNumber: string = '+639171137700';
-  public phoneNumber: string = '+14692900583';
+  public senderPhoneNumber: string = ''; // Assign the default phone number from where the call will originate, or the client that it originates from i.e. client:alice
+  public phoneNumber: string = ''; // Assign the default receiving phone number or client i.e. +12345678
+
   public option1: any = {
     key: '',
     value: '',
@@ -32,9 +32,7 @@ export class HelloWorldModel extends Observable {
         console.log('Permission is not granted :(');
       });
     }
-
-    let self = this;
-
+    // Assign Call Listeners
     const callListener = {
       onConnectFailure(call, error) {
         dialogs.alert(`connection failure: ${error}`);
@@ -80,19 +78,20 @@ export class HelloWorldModel extends Observable {
   }
 
   public onCall(): void {
-    console.log('Updating access token:');
+
     getAccessToken()
       .then((token) => {
-        // console.log(`Twilio access token: ${token}`);
+        console.log(`Twilio access token: ${token}`);
 
+        // Instantiate Twilio with token provided from server
         this.twilio = new Twilio(token);
 
         let options = {};
         if (this.option1.key) {
-          options[this.option1.key] = this.option1.value
+          options[this.option1.key] = this.option1.value;
         }
         if (this.option2.key) {
-          options[this.option2.key] = this.option2.value
+          options[this.option2.key] = this.option2.value;
         }
 
         let call = this.twilio.makeCall(this.senderPhoneNumber, this.phoneNumber, options);

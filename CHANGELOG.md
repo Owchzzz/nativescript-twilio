@@ -17,6 +17,7 @@
 * Show the actual app name in the callkit UI, without need of configurate it. ([40613c5](https://github.com/Owchzzz/nativescript-twilio/commit/40613c5))
 * Use the call invitation from value in CallKit UI. Also make App label configurable in the CallKit UI. ([33fcc84](https://github.com/Owchzzz/nativescript-twilio/commit/33fcc84))
 
+* Twilio SDK 3.0 support ([PR 9](https://github.com/msaelices/nativescript-twilio/pull/9))
 
 
 <a name="0.13.0"></a>

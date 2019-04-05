@@ -48,7 +48,7 @@ export declare class TwilioAppDelegate extends UIResponder implements UIApplicat
     handleCallInviteReceived(callInvite: TVOCallInvite): void;
     handleCallInviteCanceled(callInviteCanceled: TVOCancelledCallInvite): void;
     incomingPushHandled(): void;
-    reportIncomingCall(from: String, uuid: any, callInvite: TVOCallInvite): void;
+    reportIncomingCall(callInvite: TVOCallInvite): void;
     providerDidReset(provider: CXProvider): void;
     providerDidActivateAudioSession(provider: CXProvider, audioSession: AVAudioSession): void;
     providerDidBegin(provider: CXProvider): void;

@@ -7,7 +7,7 @@ import { TwilioAppDelegate } from 'nativescript-twilio/delegate';
 const accessTokenUrl = 'http://21402340.ngrok.io/accessToken';
 
 const accessTokenHeaders = {
-  // 'Authorization': 'Token '
+  // 'Authorization': 'Token sometoken'
 };
 
 initTwilio(accessTokenUrl, accessTokenHeaders);

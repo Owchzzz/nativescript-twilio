@@ -56,6 +56,6 @@ export class AppComponent implements OnInit{
             .catch((error) => {
                 console.error(error);
                 dialogs.alert(error);
-            })
+            });
     }
 }
