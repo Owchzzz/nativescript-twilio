@@ -16,18 +16,16 @@ export class CallDelegate extends NSObject implements TVOCallDelegate {
 
   callDidDisconnectWithError(call: TVOCall, error: NSError) {
     if (!error) {
-      console.error("callDidDisconnect uuid:",call.uuid);
+      console.error("callDidDisconnect uuid:", call.uuid);
     } else {
       console.error("callDidDisconnectWithError", error);
     }
-    
-    // common.endCallFromRemote(call.uuid);
+
     common.setActiveCall(false);
     common.callIt(common.callListener, "onDisconnected", call);
     const endDate = new Date();
     const reason = CXCallEndedReason.RemoteEnded;
-    // const reason = CXCallEndedReason.RemoteEnded;
-    this.ckprovider.reportCallWithUUIDEndedAtDateReason(call.uuid,endDate,reason);
+    this.ckprovider.reportCallWithUUIDEndedAtDateReason(call.uuid, endDate, reason);
     console.log("Reported call ended");
   }
 
@@ -110,7 +108,8 @@ export class TwilioAppDelegate extends UIResponder
 
     // const dispatchQueue = dispatch_queue_create(null,null); // Needed to trigger listeners
     // const dispatchQueue = dispatch_get_global_queue(dispatch)
-    const dispatchQueue = dispatch_get_global_queue(0, 0);
+    const bg = qos_class_t.QOS_CLASS_BACKGROUND;
+    const dispatchQueue = dispatch_get_global_queue(bg, 0);
     this.callKitProvider.setDelegateQueue(this, dispatchQueue);
 
     common.setupCallKitProvider(this.callKitProvider);
