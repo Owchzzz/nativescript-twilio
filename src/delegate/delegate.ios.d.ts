@@ -2,6 +2,8 @@ export declare class CallDelegate extends NSObject implements TVOCallDelegate {
     static ObjCProtocols: {
         prototype: TVOCallDelegate;
     }[];
+    ckprovider: CXProvider;
+    setupCallKitProvider(provider: any): void;
     callDidConnect(call: TVOCall): void;
     callDidDisconnectWithError(call: TVOCall, error: NSError): void;
     callDidFailToConnectWithError(call: TVOCall, error: NSError): void;
@@ -24,6 +26,9 @@ export declare class TwilioAppDelegate extends UIResponder implements UIApplicat
     incomingPushCompletionCallback: () => void;
     callKitCompletionCallback: () => void;
     audioDevice: TVODefaultAudioDevice;
+    callState: boolean;
+    answered: boolean;
+    activeUUID: NSUUID;
     applicationDidFinishLaunchingWithOptions(application: UIApplication, launchOptions: any): boolean;
     applicationDidBecomeActive(application: UIApplication): void;
     applicationDidRegisterForRemoteNotificationsWithDeviceToken(application: UIApplication, deviceToken: NSData): void;
@@ -58,4 +63,5 @@ export declare class TwilioAppDelegate extends UIResponder implements UIApplicat
     providerPerformStartCallAction(provider: CXProvider, action: CXStartCallAction): void;
     providerTimedOutPerformingAction(provider: CXProvider, action: CXAction): void;
     performAnswerVoiceCall(uuid: any, completionHandler: any): void;
+    performEndCallAction(uuid: any, callBack: any): void;
 }

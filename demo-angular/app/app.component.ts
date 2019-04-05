@@ -1,25 +1,35 @@
-import { Component } from "@angular/core";
+import { Component, OnInit, NgZone } from "@angular/core";
 import * as dialogs from 'tns-core-modules/ui/dialogs';
 
 import { getAccessToken, setupCallListener, Twilio } from 'nativescript-twilio';
+import { RouterExtensions } from "nativescript-angular/router";
 
 @Component({
     selector: "my-app",
     templateUrl: "./app.component.html",
 })
-export class AppComponent {
+export class AppComponent implements OnInit{
     public senderPhoneNumber: string = '';
     public receiverPhoneNumber: string = '';
 
     private twilio: Twilio;
 
-    constructor() {
+    constructor(
+        private router: RouterExtensions,
+        private zone: NgZone
+    ) {
+        
       const callListener = {
           onConnectFailure: (call, error) => {
               dialogs.alert(`connection failure: ${error}`);
           },
           onConnected: (call) => {
               dialogs.alert("call connected");
+              this.zone.run(() => {
+                    this.router.navigate(["/call"], {
+                        transition: { name: "fade", curve: "linear" },
+                    });
+                });
           },
           onDisconnected: (call) => {
               dialogs.alert("disconnected");
@@ -28,6 +38,10 @@ export class AppComponent {
       setupCallListener(callListener);
     }
 
+    ngOnInit(): void {
+
+        
+    }
     onCall(): void {
         getAccessToken()
             .then((token) => {

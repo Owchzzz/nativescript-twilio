@@ -7,7 +7,8 @@ let accessTokenHeaders: any = {};
 export let callListener: any = undefined;
 export let pushListener: any = undefined;
 export let incomingCallOptions: Object = undefined;
-
+export let ckProvider: any = null;
+export let inCall: boolean = false;
 export function initTwilio(url:string, headers: any = {}) {
   accessTokenUrl = url;
   accessTokenHeaders = headers;
@@ -20,6 +21,10 @@ export function setupCallListener(listener: any) {
 
 export function setupPushListener(listener: any) {
   pushListener = listener;
+}
+
+export function setupCallKitProvider(provider: any) {
+    ckProvider = provider;
 }
 
 export function getAccessToken(): Promise<string> {
@@ -82,4 +87,21 @@ export function readIt(listener: object, method: string, ...args) : any {
       return responseVal;
     }
   }
+}
+
+export function endCallFromRemote(uuid: any) {
+    if(ckProvider !== null) {
+        const endDate = new Date();
+        const reason = CXCallEndedReason.RemoteEnded;
+
+        ckProvider.reportCallWithUUIDEndedAtDateReason(uuid, endDate, reason);
+    }
+}
+
+export function inActiveCall(): boolean {
+    return inCall;
+}
+
+export function setActiveCall(trigger:boolean): void {
+    inCall = trigger;
 }

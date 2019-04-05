@@ -1,6 +1,6 @@
 {
     "nativescript": {
-        "id": "com.commite.hiveku",
+        "id": "com.hiveku.twilioplugindev",
         "tns-ios": {
             "version": "5.2.0"
         },

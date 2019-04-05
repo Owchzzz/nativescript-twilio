@@ -66,7 +66,7 @@ export class HelloWorldModel extends Observable {
 
         onIncomingCall(customParameters) {
           return {
-            from: customParameters.from_name
+            from: customParameters.subscriber_name
           }
         },
 

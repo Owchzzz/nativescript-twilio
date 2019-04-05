@@ -1,3 +1,24 @@
+<a name="0.14.0"></a>
+# 0.14.0 (2019-03-28)
+
+
+### Bug Fixes
+
+* Fix TS makeCall signature ([c644c0b](https://github.com/Owchzzz/nativescript-twilio/commit/c644c0b))
+* More robust callbacks, checking that are callable before calling them. ([63ded96](https://github.com/Owchzzz/nativescript-twilio/commit/63ded96))
+* Some hacks to fix the Android version. ([b2cfa01](https://github.com/Owchzzz/nativescript-twilio/commit/b2cfa01))
+
+
+### Features
+
+* Create an abstract Call class which translates the mute() and disconnect() methods both to Android and iOS ([961aac6](https://github.com/Owchzzz/nativescript-twilio/commit/961aac6))
+* Implemented setting the audio session output to a speaker (only for iOS yet). ([6abe58c](https://github.com/Owchzzz/nativescript-twilio/commit/6abe58c))
+* setupPushListener and unregisterPushNotifications implemented ([18a43ba](https://github.com/Owchzzz/nativescript-twilio/commit/18a43ba))
+* Show the actual app name in the callkit UI, without need of configurate it. ([40613c5](https://github.com/Owchzzz/nativescript-twilio/commit/40613c5))
+* Use the call invitation from value in CallKit UI. Also make App label configurable in the CallKit UI. ([33fcc84](https://github.com/Owchzzz/nativescript-twilio/commit/33fcc84))
+
+
+
 <a name="0.13.0"></a>
 # 0.13.0 (2019-02-21)
 

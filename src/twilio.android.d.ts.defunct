@@ -1,0 +1,17 @@
+import * as common from './twilio.common';
+export declare const getAccessToken: typeof common.getAccessToken;
+export declare const initTwilio: typeof common.initTwilio;
+export declare const setupCallListener: typeof common.setupCallListener;
+export declare const setupPushListener: typeof common.setupPushListener;
+export declare function unregisterPushNotifications(token: string, deviceToken: string, callback?: (error: any) => void): void;
+export declare class Call extends common.Call {
+    private _call;
+    constructor(twilioCall: com.twilio.voice.Call);
+    disconnect(): void;
+    mute(value: boolean): void;
+}
+export declare class Twilio extends common.Common {
+    constructor(accessToken: string);
+    makeCall(senderPhoneNumber: any, phoneNumber: any, options?: any): common.Call;
+    toggleAudioOutput(toSpeaker: boolean): void;
+}
